@@ -33,14 +33,16 @@ We can measure the energy used by the programs using the Intel® Power Gadget. I
 We are experimenting with the same algorithm in both languages: Gaussian Blur. In image processing, a Gaussian blur is the result of blurring an image by a two-dimensional Gaussian function which was named after mathematician and scientist Carl Friedrich Gauss. Applying the algorithm to the image causes a blurring effect on the image, the intensity of the blur effect depending on variables like the kernel and standard deviation. We made sure to write the code for the two languages to execute as similar as possible.
 
 \subsection{Python}
-\begin{figure}[htbp]
-	\centering
-	\includegraphics[scale=0.72]{python-code.png}
-	\caption{The Python program}
-	\label{figure:python-code}
-\end{figure}
+% \begin{figure}[htbp]
+% 	\centering
+% 	\includegraphics[scale=0.72]{python-code.png}
+% 	\caption{The Python program}
+% 	\label{figure:python-code}
+% \end{figure}
 
-\begin{minted}{python}
+
+\begin{listing}[!ht]
+\begin{minted}[xleftmargin=20pt, linenos]{python}
 #!/usr/bin/env python
 
 import cv2 as cv
@@ -53,28 +55,118 @@ pr.enable()
 img_names = os.listdir("/Volumes/RAMDisk/raw")
 
 for name in img_names:
-    path = "/Volumes/RAMDisk/raw/{}".format(name)
+  path = "/Volumes/RAMDisk/raw/{}".format(name)
 
-    if ".DS_Store" in path:
-        continue
+  if ".DS_Store" in path:4
+    continue
 
-    img = cv.imread(path)
-    blur = cv.blur(img,(5,5))
+  img = cv.imread(path)
+  blur = cv.blur(img,(5,5))
 
-    cv.imwrite("/Volumes/RAMDisk/python_blurred/blurred_" + name, blur)
+  cv.imwrite("/Volumes/RAMDisk/python_blurred/blurred_" + name, blur)
 
 pr.disable()
 pr.print_stats()
 \end{minted}
+\caption{The Python program}
+\label{listing:python}
+\end{listing}
 
 os is a module that provides a portable way of using operating system dependent functionality \cite{os}. It is used in line 10 to list all image names in the raw images directory. In line 12, a for loop is used to iterate through that list of names, therefore every picture can be blurred, one at a time. Every picture first is “read” in line 18, after determining the path in line 13 and dismissing a possible macOS bug in case the file “.DS\_Store” exists in the directory in lines 15 and 16. In line 19, the Gaussian blur filter is applied to the image using the OpenCV function with parameters of the image variable and Gaussian kernel size. Line 21 shows the blurred image being written to the disk.
 In the image, we can also see the profiler cProfile being used. It is imported in line 5 and initialised in line 7. Line 8 enables the profiler and line 23 disables it so it is wrapped around the code we want to profile. In line 24 the collected statistics are printed to the console or a file.
 
-\subsection{C++}
-\begin{figure}[htbp]
-	\centering
-	\includegraphics[scale=0.72]{c++-code.png}
-	\caption{The C++ program}
-	\label{figure:C++-code}
-\end{figure}
-First, we import the OpenCV and C++ standard libraries and assign the namespaces. The path to the images is added as a parameter to the main function when the program is run in line 26. To prevent a bug we ignore the file “.DS\_Store” in the path in line 34. In line 40 we read the image file with the OpenCV imread function. In line 51 we blur the image with the GaussianBlur filter function from OpenCV \cite{gaussianblur}. Size (5, 5) is the Gaussian kernel size, it should be an odd number. The last zero controls the sigma value which is the standard deviation in the X direction and the Y direction of the Gaussian distribution. It will be calculated based on the size of the kernel \cite{gaussianblurtutorial}. In line 57 we save the image to the path specified in the parameter and check whether that succeeded. At the end, we return 0 to terminate the function successfully.
+% \subsection{C++}
+% \begin{figure}[htbp]
+% 	\centering
+% 	\includegraphics[scale=0.72]{c++-code.png}
+% 	\caption{The C++ program}
+% 	\label{figure:C++-code}
+% \end{figure}
+
+\begin{listing}[!ht]
+\begin{minted}[xleftmargin=20pt, linenos]{c++}
+#include <opencv2/opencv.hpp>
+#include <iostream>
+#include <string>
+#include <filesystem>
+#include <vector>
+
+using namespace cv;
+using namespace std;
+
+namespace fs = std::__fs::filesystem;
+\end{minted}
+\caption{The C++ program requirements}
+\label{listing:c++requirements}
+\end{listing}
+
+First, we import the OpenCV and C++ standard libraries and assign the namespaces.
+
+\begin{listing}[ht]
+\begin{minted}[xleftmargin=20pt, linenos]{c++}
+int main(int argc, char* argv[])
+{
+  if (argc < 3) {
+    cout << "Usage: ./green_apple_blur <input_path> <output_path>" << endl;
+    return 1;
+  }
+
+  string base_path = argv[1];
+  string ds = ".DS_Store";
+
+  for (const auto & file : std::__fs::filesystem::directory_iterator(base_path))
+  {
+    fs::path path = file.path();
+    string filename = path.filename().string();
+
+    if (find(path.begin(),path.end(),ds)!=path.end())
+      {
+        continue;
+      }
+
+\end{minted}
+\caption{Reading the image file}
+\label{listing:c++-read}
+\end{listing}
+
+The path to the images is added as a parameter to the main function when the program is run in line 1. To prevent a bug we ignore the file “.DS\_Store” in the path in line 16.
+
+\begin{listing}[ht]
+\begin{minted}[xleftmargin=20pt, linenos]{c++}
+
+    // Read the image file
+    Mat image = imread(path);
+
+    // Check for failure
+    if (image.empty())
+      {
+        cout << "Could not open or find the image" << endl;
+        cin.get(); //wait for any key press
+        return -1;
+      }
+
+    //Blur the image with 5x5 Gaussian kernel
+    Mat image_blurred;
+    GaussianBlur(image, image_blurred, Size(5, 5), 0);
+
+    string writePath = argv[2];
+
+    string blur_path = writePath + "/blurred_" + filename;
+    bool isSuccess = imwrite(blur_path, image_blurred); //write the image to a file as JPEG
+
+    if (isSuccess == false)
+      {
+        cout << "Failed to save the image" << endl;
+        cin.get(); //wait for a key press
+        return -1;
+      }
+    }
+
+    return 0;
+}
+\end{minted}
+\caption{Processing and writing the image file to the disk}
+\label{listing:c++-write}
+\end{listing}
+
+In line 2 we read the image file with the OpenCV imread function. In line 14 we blur the image with the GaussianBlur filter function from OpenCV \cite{gaussianblur}. Size (5, 5) is the Gaussian kernel size, it should be an odd number. The last zero controls the sigma value which is the standard deviation in the X direction and the Y direction of the Gaussian distribution. It will be calculated based on the size of the kernel \cite{gaussianblurtutorial}. In line 19 we save the image to the path specified in the parameter and check whether that succeeded. At the end, we return 0 to terminate the function successfully.
