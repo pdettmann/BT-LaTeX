@@ -1,0 +1,168 @@
+% !TeX TXS-program:compile = txs:///pdflatex/[--shell-escape]
+\documentclass[a4paper,12pt,oneside]{report}
+
+% set font to Times New Roman
+\usepackage{fontspec}
+\setmainfont{Times New Roman}
+
+% setup images folder
+\usepackage{graphicx}
+\graphicspath{{images/}}
+
+% configure the geometry of the paper
+\usepackage[
+	a4paper,
+	showframe=false,
+	top=3cm,
+	bottom=3cm,
+	left=3cm,
+	right=3.5cm,
+	bindingoffset=6mm
+]{geometry}
+\setlength{\headheight}{15pt}
+
+% add spacing environment
+\usepackage{setspace}
+
+% figure placement package
+\usepackage{float}
+
+% set linespacing to 1.5
+\renewcommand{\baselinestretch}{1.5}
+
+% set linespacing in footnotes to 1.0
+\let\origfootnote\footnote
+\renewcommand{\footnote}[1]{
+	\begingroup
+	\renewcommand{\baselinestretch}{1.0}
+   	\origfootnote{#1}
+   	\endgroup
+}
+
+% remove indentation for footnotes
+\usepackage[hang,flushmargin]{footmisc}
+
+% allow filling cells in tables
+\usepackage[table]{xcolor}
+
+% allow specifying row heights in tables
+\usepackage{stackengine}
+\newcommand\xrowht[2][0]{\addstackgap[.5\dimexpr#2\relax]{\vphantom{#1}}}
+
+% center caption in figures and listings
+\usepackage[justification=centering]{caption}
+% \captionsetup[listing]{position=top}
+\captionsetup{labelfont=bf}
+
+% setup minted package for listings
+\usepackage[friendly]{minted}
+
+% add enumeration package for lists
+\usepackage{enumitem}
+
+\usepackage{etoolbox}
+\apptocmd{\sloppy}{\hbadness 10000\relax}{}{}
+
+% setup glossaries (acronyms)
+% \usepackage[
+% 	toc,
+% 	acronym,
+% 	xindy={glsnumbers=false},
+% 	nonumberlist,
+% 	nopostdot,
+% 	nogroupskip
+% ]{glossaries}
+% \makeglossaries
+
+\usepackage[pdfborder={0 0 0}]{hyperref}
+\usepackage{cleveref}
+
+% add "List of Figures" and "List of Listings" to ToC
+\usepackage[nottoc]{tocbibind}
+
+% setup page header
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\bfseries\nouppercase\rightmark}
+\fancyhead[R]{\bfseries\thepage}
+
+% setup bibliography
+% \usepackage[style=apa,url=true,sorting=nty,backend=biber]{biblatex}
+% \usepackage{csquotes}
+% \addbibresource{references.bib}
+\renewcommand{\UrlFont}{\small\tt}
+
+\title{The environmental impact of programming language choice}
+\author{Paula Dettmann}
+\date{Spring 2022}
+
+\makeatletter
+\let\thetitle\@title
+\let\theauthor\@author
+\let\thedate\@date
+\makeatother
+
+\begin{document}
+
+\newgeometry{
+	top=3cm,
+	bottom=3cm,
+	left=2.5cm,
+	right=3cm,
+	bindingoffset=6mm
+}
+
+\input{titlepage}
+
+\newgeometry{
+	top=3cm,
+	bottom=3cm,
+	left=3cm,
+	right=3.5cm,
+	bindingoffset=6mm
+}
+
+\pagenumbering{roman}
+
+% \input{dedication}
+% \input{acknowledgements}
+\input{abstract}
+
+\tableofcontents
+\listoffigures
+\listoflistings
+
+% \input{acronyms}
+% \setlist[description]{leftmargin=!, labelwidth=5em}
+% \printglossary[type=\acronymtype,title={List of Abbreviations}]
+\setlist[description]{style=standard}
+\newpage
+
+\pagenumbering{arabic}
+
+\input{chapters/ch1}
+\input{chapters/ch2}
+\input{chapters/ch3}
+\input{chapters/ch4}
+\input{chapters/ch5}
+\input{chapters/ch6}
+\input{chapters/ch7}
+\input{chapters/ch8}
+\input{chapters/ch9}
+
+% \clearpage
+% \phantomsection
+% \addcontentsline{toc}{chapter}{Bibliography}
+% \setlength{\bibitemsep}{10pt}
+% \renewcommand{\baselinestretch}{1.1}
+% \sloppy
+% \printbibliography
+
+\bibliographystyle{plain}
+\bibliography{./references.bib}
+
+\input{affidavit}
+
+\end{document}
+

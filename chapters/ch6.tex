@@ -1,0 +1,80 @@
+\chapter{Methods}
+In order to prove the hypothesis, we wrote a small program to blur images. The kind of program was not important, but it was necessary for it to take a significant amount of time and make a measurable amount of impact on the CPU.
+The program is benchmarked using profilers. The profiler data shows where delays in the code are located and which language is faster at executing the same procedure. This information allows us to conclude which language, for the purpose of image processing in the form of a Gaussian blur, is more efficient and therefore more environmentally friendly.
+
+\section{Hardware}
+Most of the experiments were performed on an Apple MacBook Pro with a 1,4 GHz Quad-Core Intel Core i5 processor. The computer had 16 GB of RAM and 251 GB of flash storage. It was running version 12.3.1 of the MacOS Monterey operating system.
+
+\section{Profilers}
+A profiler is a benchmarking tool. It measures the runtime of a program, and other statistics, depending on the profiler. To benchmark our Python program on macOS, we used a combination of xctrace and cPython. For the C++ code on macOS we exclusively used xctrace.
+
+\subsection{\textit{time}}
+At first, we used the macOS \textit{time} command to measure the runtime of the Python program, as seen in image x.
+
+\begin{figure}[htbp]
+	\centering
+	\includegraphics[scale=0.72]{time.png}
+	\caption{An example of the \textit{time} command}
+	\label{figure:time}
+\end{figure}
+
+\textit{time} is a macOS shell keyword that measures the total time spent running the program. The user row shows the time spent in the CPU in user mode, meaning “it doesn’t have direct access to hardware or reference memory and must rely on APIs of the system for delegation. This is how most code runs on your system, and due to its isolation, crashes are always recoverable” \cite{time}. sys stands for system mode or kernel mode. Kernel mode is “when code being executed has unrestricted access to the system hardware” \cite{time}. The first row called real is the total time spent in the two modes.
+
+\subsection{XCode Instruments}
+In order to keep the research controlled, we decided to use the same profiler for both programs; Xcode instruments. Xcode is Apple’s IDE and contains, amongst other developer tools, Instruments. “The Instruments app, which is included with Xcode, gathers data from your running app and presents it in a graphical timeline. With Instruments, you can gather data about performance areas such as your app’s memory usage, disk activity, network activity, and graphics operations” \cite{instruments}. The command-line tool for Instruments is called xctrace and it is used to record, import, export and symbolicate Instruments .trace files. These .trace files can then be opened in the Instruments app and analysed with the graphical user interface. We mostly used the CPU Counter template. It allowed us to track how much time was spent on each part of the program; the algorithm, disk input, disk output and retrieving file names.
+
+\subsection{cProfile}
+cProfile is a profiler that is included in the Python standard library. It is a C extension with a reasonable overhead which makes it suitable for profiling long-running programs. It was based on lsprof and contributed by Brett Rosen and Ted Czotter \cite{cprofile}. cProfile measures the total time the program runs, and the amount of function calls as well as the time and function calls of each individual function. The measured statistics can be displayed in the command-line interface or a text file.
+
+\section{Energy benchmarking}
+We can measure the energy used by the programs using the Intel® Power Gadget. It is a software-based power usage monitoring tool enabled for Intel® Core™ processors. It is supported on Windows and macOS and includes an application, driver, and libraries to monitor and estimate real-time processor package power information in watts using the energy counters in the processor \cite{powergadget}. The command-line tool PowerLog allows us to measure the energy usage of a program and write it to a log file. Specifically, the log file will include the elapsed time, package power limit, processor frequency, GT (Energy of the processor graphics) frequency, processor temperature, and average and cumulative power of the processor.
+
+\section{Code}
+We are experimenting with the same algorithm in both languages: Gaussian Blur. In image processing, a Gaussian blur is the result of blurring an image by a two-dimensional Gaussian function which was named after mathematician and scientist Carl Friedrich Gauss. Applying the algorithm to the image causes a blurring effect on the image, the intensity of the blur effect depending on variables like the kernel and standard deviation. We made sure to write the code for the two languages to execute as similar as possible.
+
+\subsection{Python}
+\begin{figure}[htbp]
+	\centering
+	\includegraphics[scale=0.72]{python-code.png}
+	\caption{The Python program}
+	\label{figure:python-code}
+\end{figure}
+
+\begin{minted}{python}
+#!/usr/bin/env python
+
+import cv2 as cv
+import os
+import cProfile
+
+pr = cProfile.Profile()
+pr.enable()
+
+img_names = os.listdir("/Volumes/RAMDisk/raw")
+
+for name in img_names:
+    path = "/Volumes/RAMDisk/raw/{}".format(name)
+
+    if ".DS_Store" in path:
+        continue
+
+    img = cv.imread(path)
+    blur = cv.blur(img,(5,5))
+
+    cv.imwrite("/Volumes/RAMDisk/python_blurred/blurred_" + name, blur)
+
+pr.disable()
+pr.print_stats()
+\end{minted}
+
+os is a module that provides a portable way of using operating system dependent functionality \cite{os}. It is used in line 10 to list all image names in the raw images directory. In line 12, a for loop is used to iterate through that list of names, therefore every picture can be blurred, one at a time. Every picture first is “read” in line 18, after determining the path in line 13 and dismissing a possible macOS bug in case the file “.DS\_Store” exists in the directory in lines 15 and 16. In line 19, the Gaussian blur filter is applied to the image using the OpenCV function with parameters of the image variable and Gaussian kernel size. Line 21 shows the blurred image being written to the disk.
+In the image, we can also see the profiler cProfile being used. It is imported in line 5 and initialised in line 7. Line 8 enables the profiler and line 23 disables it so it is wrapped around the code we want to profile. In line 24 the collected statistics are printed to the console or a file.
+
+\subsection{C++}
+\begin{figure}[htbp]
+	\centering
+	\includegraphics[scale=0.72]{c++-code.png}
+	\caption{The C++ program}
+	\label{figure:C++-code}
+\end{figure}
+First, we import the OpenCV and C++ standard libraries and assign the namespaces. The path to the images is added as a parameter to the main function when the program is run in line 26. To prevent a bug we ignore the file “.DS\_Store” in the path in line 34. In line 40 we read the image file with the OpenCV imread function. In line 51 we blur the image with the GaussianBlur filter function from OpenCV \cite{gaussianblur}. Size (5, 5) is the Gaussian kernel size, it should be an odd number. The last zero controls the sigma value which is the standard deviation in the X direction and the Y direction of the Gaussian distribution. It will be calculated based on the size of the kernel \cite{gaussianblurtutorial}. In line 57 we save the image to the path specified in the parameter and check whether that succeeded. At the end, we return 0 to terminate the function successfully.
