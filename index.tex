@@ -45,10 +45,6 @@
 % allow filling cells in tables
 \usepackage{xcolor}
 
-% allow specifying row heights in tables
-\usepackage{stackengine}
-\newcommand\xrowht[2][0]{\addstackgap[.5\dimexpr#2\relax]{\vphantom{#1}}}
-
 % center caption in figures and listings
 \usepackage[justification=centering]{caption}
 % \captionsetup[listing]{position=top}
@@ -58,28 +54,14 @@
 \usepackage{minted}
 \usemintedstyle{friendly}
 
-% add enumeration package for lists
-\usepackage{enumitem}
-
 \usepackage{etoolbox}
 \apptocmd{\sloppy}{\hbadness 10000\relax}{}{}
-
-% setup glossaries (acronyms)
-% \usepackage[
-% 	toc,
-% 	acronym,
-% 	xindy={glsnumbers=false},
-% 	nonumberlist,
-% 	nopostdot,
-% 	nogroupskip
-% ]{glossaries}
-% \makeglossaries
 
 \usepackage[pdfborder={0 0 0}]{hyperref}
 \usepackage{cleveref}
 
 % add "List of Figures" and "List of Listings" to ToC
-\usepackage[nottoc]{tocbibind}
+\usepackage{tocbibind}
 
 % setup page header
 \usepackage{fancyhdr}
@@ -88,10 +70,6 @@
 \fancyhead[L]{\bfseries\nouppercase\rightmark}
 \fancyhead[R]{\bfseries\thepage}
 
-% setup bibliography
-% \usepackage[style=apa,url=true,sorting=nty,backend=biber]{biblatex}
-% \usepackage{csquotes}
-% \addbibresource{references.bib}
 \renewcommand{\UrlFont}{\small\tt}
 
 \title{The environmental impact of programming language choice}
@@ -126,19 +104,11 @@
 
 \pagenumbering{roman}
 
-% \input{dedication}
-% \input{acknowledgements}
 \input{abstract}
 
 \tableofcontents
 \listoffigures
 \listoflistings
-
-% \input{acronyms}
-% \setlist[description]{leftmargin=!, labelwidth=5em}
-% \printglossary[type=\acronymtype,title={List of Abbreviations}]
-\setlist[description]{style=standard}
-\newpage
 
 \pagenumbering{arabic}
 
@@ -151,14 +121,6 @@
 \input{chapters/ch7}
 \input{chapters/ch8}
 \input{chapters/ch9}
-
-% \clearpage
-% \phantomsection
-% \addcontentsline{toc}{chapter}{Bibliography}
-% \setlength{\bibitemsep}{10pt}
-% \renewcommand{\baselinestretch}{1.1}
-% \sloppy
-% \printbibliography
 
 \bibliographystyle{plain}
 \bibliography{references}
