@@ -75,7 +75,7 @@ pr.print_stats()
 Looking at listing 1, os is a module that provides a portable way of using operating system dependent functionality \cite{os}. It is used in line 10 to list all image names in the raw images directory. In line 12, a for loop is used to iterate through that list of names, therefore every picture can be blurred, one at a time. Every picture first is “read” in line 18, after determining the path in line 13 and dismissing a possible macOS bug in case the file “.DS\_Store” exists in the directory in lines 15 and 16. In line 19, the Gaussian blur filter is applied to the image using the OpenCV function with parameters of the image variable and Gaussian kernel size. Line 21 shows the blurred image being written to the disk.
 In listing 1, we can also see the profiler cProfile being used. It is imported in line 5 and initialised in line 7. Line 8 enables the profiler and line 23 disables it so it is wrapped around the code we want to profile. In line 24 the collected statistics are printed to the console or a file.
 
-% \subsection{C++}
+\subsection{C++}
 % \begin{figure}[htbp]
 % 	\centering
 % 	\includegraphics[scale=0.72]{c++-code.png}

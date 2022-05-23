@@ -6,7 +6,7 @@ The first experiment we did was to run our programs with the chosen profiler of 
 
 \begin{figure}[H]
 	\centering
-	\includegraphics[scale=0.62]{average-78img.png}
+	\includegraphics[scale=0.72]{average-without-script.pdf}
 	\caption{The average of 5 runs for each language}
 	\label{figure:average-78img}
 \end{figure}
@@ -18,7 +18,7 @@ One approach to solving the significant delay of C++ when writing images to the 
 
 \begin{figure}[H]
 	\centering
-	\includegraphics[scale=0.62]{bmp.png}
+	\includegraphics[scale=0.72]{bmp.pdf}
 	\caption{Saving the image as a BMP file}
 	\label{figure:bmp}
 \end{figure}
@@ -26,63 +26,109 @@ One approach to solving the significant delay of C++ when writing images to the 
 \section{Using a script to benchmark}
 The following experiment was to benchmark the programs using a script. A script is a sequence of instructions that are carried out subsequently by a computer, as seen in figure 7.3.
 
-\begin{figure}[H]
-	\centering
-	\includegraphics[scale=0.62]{script.png}
+\begin{listing}[!ht]
+	\begin{minted}[xleftmargin=20pt, linenos]{bash}
+#!/bin/bash
+
+#test
+python3 ./test_opencv_cprofile.py >> python_profile_test.txt
+xctrace record --template 'green' --launch ../C/green_apple_blur_new
+/Volumes/RAMDisk/test /Volumes/RAMDisk/test_result
+xctrace record --template 'green' --launch ./test_opencv.py
+
+#78 img
+python3 ./opencv_cprofile.py >> python_profile.txt
+xctrace record --template 'green' --launch ../C/green_apple_blur_new
+/Volumes/RAMDisk/raw /Volumes/RAMDisk/cBlurred
+xctrace record --template 'green' --launch ./opencv.py
+	\end{minted}
 	\caption{The script used to profile the different programs}
-	\label{figure:script}
-\end{figure}
+	\label{listing:script}
+	\end{listing}
 
 We did this to minimise the time between running each benchmark and, therefore, minimise the difference between computer operations. It also allowed us to randomise the different programs to see how one program running before or after another might affect its performance.
 
 \begin{figure}[H]
 	\centering
-	\includegraphics[scale=0.75]{script-vs-noscript.png}
+	\begin{subfigure}{.5\textwidth}
+	  \centering
+	  \includegraphics[width=1\linewidth]{average-without-script.pdf}
+	  \caption{Average without script}
+	  \label{fig:no-script}
+	\end{subfigure}%
+	\begin{subfigure}{.5\textwidth}
+	  \centering
+	  \includegraphics[width=1\linewidth]{script-benchmark.pdf}
+	  \caption{Script benchmark}
+	  \label{fig:script}
+	\end{subfigure}
 	\caption{Comparing the results of a script versus no script}
-	\label{figure:script-vs-noscript}
+	\label{fig:script-vs-noscript}
 \end{figure}
 
-We can see in figure 7.4-left, when compared to figure 7.4-right, that there is a slight difference between the readings when using a script. This is especially visible when writing the image in C++. We might attribute this to the system load caused by running all programs so quickly after each other.
+We can see in figure 7.3-a, when compared to figure 7.3-b, that there is a slight difference between the readings when using a script. This is especially visible when writing the image in C++. We might attribute this to the system load caused by running all programs so quickly after each other.
 
 \begin{figure}[H]
 	\centering
-	\includegraphics[scale=0.62]{two-scripts.png}
+	\begin{subfigure}{.5\textwidth}
+	  \centering
+	  \includegraphics[width=1\linewidth]{ramdisk.pdf}
+	  \caption{Script with RAMdisk}
+	  \label{fig:ramdisk}
+	\end{subfigure}%
+	\begin{subfigure}{.5\textwidth}
+	  \centering
+	  \includegraphics[width=1\linewidth]{random-ramdisk.pdf}
+	  \caption{Randomised script with RAMdisk}
+	  \label{fig:random-ramdisk}
+	\end{subfigure}
 	\caption{Comparing two different scripts}
-	\label{figure:two-scripts}
+	\label{fig:two-scripts}
 \end{figure}
 
-Figure 7.5 shows two benchmarks with a different script order, both using a RAMdisk. Each was measured by blurring 78 images. There is a slight difference between the two benchmarks, the randomised one running about two seconds faster. Overall, the proportions of the different benchmarks stayed the same.
+Figure 7.4 shows two benchmarks with a different script order, both using a RAMdisk. Each was measured by blurring 78 images. There is a slight difference between the two benchmarks, the randomised one running about two seconds faster. Overall, the proportions of the different benchmarks stayed the same.
 
 \section{RAMdisk}
 A RAMdisk is a block of random-access memory that a computer's software is treating as if the memory were a disk drive. It can be used to accelerate the reading and writing of files. We installed a RAMdisk using the command "diskutil erasevolume HFS+ "RAMDisk" `hdiutil attach -nomount ram://2097152`" in the terminal. This creates a RAMdisk with 1 GB of storage space.
 
 \begin{figure}[H]
 	\centering
-	\includegraphics[scale=0.62]{ramdisk.png}
-	\caption{Comparing benchmarks without and with the use of a RAMdisk using the same script}
-	\label{figure:ramdisk}
+	\begin{subfigure}{.5\textwidth}
+	  \centering
+	  \includegraphics[width=1\linewidth]{script-benchmark.pdf}
+	  \caption{Script without RAMdisk}
+	  \label{fig:script2}
+	\end{subfigure}%
+	\begin{subfigure}{.5\textwidth}
+	  \centering
+	  \includegraphics[width=1\linewidth]{ramdisk.pdf}
+	  \caption{Script with RAMdisk}
+	  \label{fig:ramdisk2}
+	\end{subfigure}
+	\caption{Comparing benchmarks with and without the use of a RAMdisk using the same script}
+	\label{fig:ramdisk-vs-noramdisk}
 \end{figure}
 
-As seen in figure 7.6, compared to the benchmarks with no RAMdisk, running the scripted benchmarks with a RAMdisk surprisingly returns a decreased performance. However, the difference is so slight that we cannot confirm whether this is due to the RAMdisk or another influence.
+As seen in figure 7.5, compared to the benchmarks with no RAMdisk, running the scripted benchmarks with a RAMdisk surprisingly returns a decreased performance. However, the difference is so slight that we cannot confirm whether this is due to the RAMdisk or another influence.
 
 \section{Running the programs on a different computer}
 In order to find out whether the computer hardware influenced the disk I/O, we decided to test the programs on a different computer. We utilised the same computer type in a different configuration: the MacBook Pro from 2021 with an M1 Pro Apple Silicon CPU, 32 GB of RAM and a 1 TB SSD. To run the programs on this new configuration, we needed to install Python version 3.10.3 instead of the previously used 3.8.12. Our software was not compatible with the new M1 chip, so it had to be recompiled for Apple Silicon.
 
 \begin{figure}[H]
 	\centering
-	\includegraphics[scale=0.62]{different-comp.png}
+	\includegraphics[scale=0.72]{different-comp.pdf}
 	\caption{Script benchmark on a different computer}
 	\label{figure:different-comp}
 \end{figure}
 
-Figure 7.7 shows a similar distribution of runtime for the benchmark but an overall acceleration of 15 to 20 seconds compared to the other computer. The results are expected since this computer is a newer model and has more powerful hardware.
+Figure 7.6 shows a similar distribution of runtime for the benchmark but an overall acceleration of 15 to 20 seconds compared to the other computer. The results are expected since this computer is a newer model and has more powerful hardware.
 
 \section{Profiling C++ and Python on Linux}
-In order to rule out the possibility of the operating system influencing the unexpectedly slow C++ runtime, we decided to experiment with our programs on a different operating system. We created an Ubuntu Linux instance using a virtual machine to benchmark our programs. This required some adjusting as the executable made for macOS was not compatible with Linux, and Linux obviously does not support the macOS instruments profiler. We compiled the C++ code with the cmake tool to create the new executable. We used the GCC (GNU Compiler Collection) compiler native fprofile command as a profiler. For Python, it was still possible to use the cProfile profiler. We ran each program five times and calculated the average as seen in figure 7.8.
+In order to rule out the possibility of the operating system influencing the unexpectedly slow C++ runtime, we decided to experiment with our programs on a different operating system. We created an Ubuntu Linux instance using a virtual machine to benchmark our programs. This required some adjusting as the executable made for macOS was not compatible with Linux, and Linux obviously does not support the macOS instruments profiler. We compiled the C++ code with the cmake tool to create the new executable. We used the GCC (GNU Compiler Collection) compiler native fprofile command as a profiler. For Python, it was still possible to use the cProfile profiler. We ran each program five times and calculated the average as seen in figure 7.7.
 
 \begin{figure}[H]
 	\centering
-	\includegraphics[scale=0.62]{linux.png}
+	\includegraphics[scale=0.72]{linux.pdf}
 	\caption{The average for the programs run on Linux}
 	\label{figure:linux}
 \end{figure}
@@ -94,7 +140,7 @@ One theory we had for the delay of C++ for disk output was that it was due to ho
 
 \begin{figure}[H]
 	\centering
-	\includegraphics[scale=0.62]{same-opencv.png}
+	\includegraphics[scale=0.72]{same-opencv.pdf}
 	\caption{Average of results using the same OpenCV version}
 	\label{figure:same-opencv}
 \end{figure}
@@ -102,11 +148,11 @@ One theory we had for the delay of C++ for disk output was that it was due to ho
 We can see that the total runtime here is significantly less than when using the previous images. This can probably be attributed to the randomly generated images, which seem to have a lower resolution and are therefore faster to be processed. However, this is not important for this study as only the comparison of C++ and Python is of any consequence and not the overall performance.
 
 \section{The error interval}
-An error interval is a property of the instrument and the user and will remain the same for all readings taken, provided the scale is linear \cite{errorinterval}. It can be determined by finding the fraction of the smallest readable division on the instrument. In the case displayed in figure 7.10, benchmarking Python has yielded the error intervals in the last row, which is the same for each reading, using the same instrument.
+An error interval is a property of the instrument and the user and will remain the same for all readings taken, provided the scale is linear \cite{errorinterval}. It can be determined by finding the fraction of the smallest readable division on the instrument. In the case displayed in figure 7.9, benchmarking Python has yielded the error intervals in the last row, which is the same for each reading, using the same instrument.
 
 \begin{figure}[H]
 	\centering
-	\includegraphics[scale=0.62]{error-interval.png}
+	\includegraphics[scale=0.62]{error-interval.pdf}
 	\caption{Python profiler average with error interval}
 	\label{figure:error-interval}
 \end{figure}
@@ -118,9 +164,9 @@ To confirm that runtime was congruous with energy consumption, we used the Intel
 
 \begin{figure}[H]
 	\centering
-	\includegraphics[scale=0.50]{energy-consumption.png}
+	\includegraphics[scale=0.72]{energy.pdf}
 	\caption{Energy consumption of the programs in Joule}
 	\label{figure:energy-consumption}
 \end{figure}
 
-We can see in figure 7.11 that the proportion of runtime to energy consumption is approximately the same. C++ used more energy than Python for the same program. Python’s runtime is 66,78\% of the C++ runtime, and Python’s energy consumption is 72,00\% of C++’s energy consumption overall and 72,30\% of the energy of the CPU/processor cores. These results indicate that runtime is an approximate indicator of energy consumption.
+We can see in figure 7.10 that the proportion of runtime to energy consumption is approximately the same. C++ used more energy than Python for the same program. Python’s runtime is 66,78\% of the C++ runtime, and Python’s energy consumption is 72,00\% of C++’s energy consumption overall and 72,30\% of the energy of the CPU/processor cores. These results indicate that runtime is an approximate indicator of energy consumption.

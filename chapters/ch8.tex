@@ -10,17 +10,28 @@ We could also observe that different types of images might have influenced the r
 
 \begin{figure}[H]
 	\centering
-	\includegraphics[scale=0.62]{test-images.png}
-	\caption{high-resolution image (left) next to a randomly generated image (right)}
-	\label{figure:test-images}
+	\begin{subfigure}{.5\textwidth}
+	  \centering
+	  \includegraphics[width=1\linewidth]{high-res.jpeg}
+	  \caption{High resolution image \cite{images}}
+	  \label{fig:high-res-img}
+	\end{subfigure}%
+	\begin{subfigure}{.46\textwidth}
+	  \centering
+	  \includegraphics[width=1\linewidth]{random-img.jpeg}
+	  \caption{Randomly generated image}
+	  \label{fig:random-img}
+	\end{subfigure}
+	\caption{a high-resolution image compared to a randomly generated image \cite{random-img}}
+	\label{fig:test-images}
 \end{figure}
 
-We can see that image 8.1-left is a bit more complex than image 8.1-right, having colours and higher resolution. This means that blurring image 8.1-right might have been a bit faster than image 8.1-left, represented by the shorter runtime for the experiment running OpenCV from VCPKG on C++.
+We can see that image 8.1-a is a bit more complex than image 8.1-b, having colours and higher resolution. This means that blurring image 8.1-b might have been a bit faster than image 8.1-a, represented by the shorter runtime for the experiment running OpenCV from VCPKG on C++.
 We observed a significant change in performance regarding different versions of a library. We also experimented with a different image processing library for Python called scikit-image \cite{scikit}. Scikit-image is written predominantly in Python. As seen in figure 8.2, scikit-image caused Python to perform significantly worse than C++ with OpenCV. Whereas when Python did use OpenCV, it performed better than C++. This proves to a certain extent that the type and version of a library are essential factors in optimisation.
 
 \begin{figure}[H]
 	\centering
-	\includegraphics[scale=0.62]{scikit-total.png}
+	\includegraphics[scale=0.72]{scikit-total.pdf}
 	\caption{Python total runtime using scikit-image to blur 79 images}
 	\label{figure:scikit-total}
 \end{figure}
