@@ -1,5 +1,5 @@
-% !TeX TXS-program:compile = txs:///pdflatex/[--shell-escape]
 \documentclass[a4paper,12pt,oneside]{report}
+\usepackage[english]{babel}
 
 % set font to Times New Roman
 \usepackage{fontspec}
@@ -47,7 +47,7 @@
 
 % center caption in figures and listings
 \usepackage[justification=centering]{caption}
-% \captionsetup[listing]{position=top}
+\captionsetup[listing]{position=top}
 \captionsetup{labelfont=bf}
 
 % setup minted package for listings
@@ -57,11 +57,22 @@
 \usepackage{etoolbox}
 \apptocmd{\sloppy}{\hbadness 10000\relax}{}{}
 
+% %setup glossaries (acronyms)
+% \usepackage[
+% 	toc,
+% 	acronym,
+% 	xindy={glsnumbers=false},
+% 	nonumberlist,
+% 	nopostdot,
+% 	nogroupskip
+% ]{glossaries}
+% \makeglossaries
+
 \usepackage[pdfborder={0 0 0}]{hyperref}
 \usepackage{cleveref}
 
 % add "List of Figures" and "List of Listings" to ToC
-\usepackage{tocbibind}
+\usepackage[nottoc]{tocbibind}
 
 % packages for displaying two images together
 \usepackage{caption}
@@ -74,9 +85,13 @@
 \fancyhead[L]{\bfseries\nouppercase\rightmark}
 \fancyhead[R]{\bfseries\thepage}
 
+% setup bibliography
+% \usepackage[style=apa,url=true,sorting=nty,backend=biber]{biblatex}
+% \usepackage{csquotes}
+% \addbibresource{references.bib}
 \renewcommand{\UrlFont}{\small\tt}
 
-\title{The environmental impact of programming language choice}
+\title{The Environmental Impact of Programming Language Choice}
 \author{Paula Dettmann}
 \date{Spring 2022}
 
@@ -114,9 +129,9 @@
 \listoffigures
 \listoflistings
 
+\input{chapters/ch1}
 \pagenumbering{arabic}
 
-\input{chapters/ch1}
 \input{chapters/ch2}
 \input{chapters/ch3}
 \input{chapters/ch4}
@@ -126,7 +141,15 @@
 \input{chapters/ch8}
 \input{chapters/ch9}
 
-\bibliographystyle{plain}
+% \clearpage
+% \phantomsection
+% \addcontentsline{toc}{chapter}{Bibliography}
+% \setlength{\bibitemsep}{10pt}
+% \renewcommand{\baselinestretch}{1.1}
+% \sloppy
+% \printbibliography
+
+\bibliographystyle{apalike}
 \bibliography{references}
 
 \input{affidavit}

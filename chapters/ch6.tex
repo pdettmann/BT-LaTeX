@@ -3,7 +3,7 @@ In order to prove the hypothesis, we wrote a small program to blur images. The k
 We benchmarked the program using profilers. The profiler data shows where delays in the code are located and which language is faster at executing the same procedure. This information allows us to conclude which language, for the purpose of image processing in the form of a Gaussian blur, is more efficient and therefore more environmentally friendly.
 
 \section{Hardware}
-Most of the experiments were performed on an Apple MacBook Pro with a 1,4 GHz Quad-Core Intel Core i5 processor. The computer had 16 GB of RAM and 251 GB of flash storage. It was running version 12.3.1 of the MacOS Monterey operating system.
+Most of the experiments were performed on an Apple MacBook Pro with a 1.4 GHz Quad-Core Intel Core i5 processor. The computer had 16 GB of RAM and 251 GB of flash storage. It was running version 12.3.1 of the MacOS Monterey operating system.
 
 \section{Profilers}
 A profiler is a benchmarking tool. It measures the runtime of a program, and other statistics, depending on the profiler. To benchmark our Python program on macOS, we used a combination of xctrace and cPython. For the C++ code on macOS, we exclusively used xctrace.
@@ -33,13 +33,6 @@ We can measure the energy used by the programs using the Intel® Power Gadget. I
 We are experimenting with the same algorithm in both languages: Gaussian Blur. In image processing, a Gaussian blur is a result of blurring an image by a two-dimensional Gaussian function which was named after mathematician and scientist Carl Friedrich Gauss. Applying the algorithm to the image causes a blurring effect on the image, the intensity of the blur effect depending on variables like the kernel and standard deviation. We made sure to write the code for the two languages to execute as similar as possible.
 
 \subsection{Python}
-% \begin{figure}[htbp]
-% 	\centering
-% 	\includegraphics[scale=0.72]{python-code.png}
-% 	\caption{The Python program}
-% 	\label{figure:python-code}
-% \end{figure}
-
 
 \begin{listing}[!ht]
 \begin{minted}[xleftmargin=20pt, linenos]{python}
@@ -76,12 +69,6 @@ Looking at listing 1, os is a module that provides a portable way of using opera
 In listing 1, we can also see the profiler cProfile being used. It is imported in line 5 and initialised in line 7. Line 8 enables the profiler and line 23 disables it so it is wrapped around the code we want to profile. In line 24 the collected statistics are printed to the console or a file.
 
 \subsection{C++}
-% \begin{figure}[htbp]
-% 	\centering
-% 	\includegraphics[scale=0.72]{c++-code.png}
-% 	\caption{The C++ program}
-% 	\label{figure:C++-code}
-% \end{figure}
 
 \begin{listing}[!ht]
 \begin{minted}[xleftmargin=20pt, linenos]{c++}

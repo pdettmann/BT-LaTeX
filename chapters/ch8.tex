@@ -1,6 +1,6 @@
 \chapter{Discussion}
 Having experimented with many different configurations of the same program for both languages, we can make several observations. These observations are made only based on the image blurring programs for C++ and Python and cannot be generalised.
-For one, we can say that on the MacBook Pros used for the experiments, Python performs faster by about 14 seconds than C++ for the standard OpenCV versions. Secondly, we can say that there is a difference in disk I/O for different image file types, which differ for the different languages. We also observed that using a script can provide more consistent data, and randomising said script can provide different results. Using a RAMdisk for disk I/O changes the total runtime, but the function runtimes' proportions stay the same. When running the programs on a different MacBook Pro, we observed a faster runtime overall but similar proportions yet again. Running the programs on a different operating system causes different results. On Linux, C++ ran approximately 14,7 seconds faster than Python. This is the direct opposite of running the programs on macOS. When running the scripted C++ program on macOS, we observed that we needed to change the version of the OpenCV library to measure similar results to the scripted Python program. Lastly, we primarily focus our research on measured proportions, so the error interval does not hold weight in this study.
+For one, we can say that on the MacBook Pros used for the experiments, Python performs faster by about 14 seconds than C++ for the standard OpenCV versions. Secondly, we can say that there is a difference in disk I/O for different image file types, which differ for the different languages. We also observed that using a script can provide more consistent data, and randomising said script can provide different results. Using a RAMdisk for disk I/O changes the total runtime, but the function runtimes' proportions stay the same. When running the programs on a different MacBook Pro, we observed a faster runtime overall but similar proportions yet again. Running the programs on a different operating system causes different results. On Linux, C++ ran approximately 14.7 seconds faster than Python. This is the direct opposite of running the programs on macOS. When running the scripted C++ program on macOS, we observed that we needed to change the version of the OpenCV library to measure similar results to the scripted Python program. Lastly, we primarily focus our research on measured proportions, so the error interval does not hold weight in this study.
 These observations tell us that we cannot conclude from these experiments that the programming language itself makes a massive difference in optimisation. However, we can conclude that each minor change to the configuration of a program can make a big difference in the runtime and, therefore, the environmental impact.
 
 \section{Influencing factors}
@@ -16,7 +16,7 @@ We could also observe that different types of images might have influenced the r
 	  \caption{High resolution image \cite{images}}
 	  \label{fig:high-res-img}
 	\end{subfigure}%
-	\begin{subfigure}{.46\textwidth}
+	\begin{subfigure}{.47\textwidth}
 	  \centering
 	  \includegraphics[width=1\linewidth]{random-img.jpeg}
 	  \caption{Randomly generated image}

@@ -11,7 +11,7 @@ The first experiment we did was to run our programs with the chosen profiler of 
 	\label{figure:average-78img}
 \end{figure}
 
-These results were highly uncharacteristic. Based on previous research, we expected C++ to be faster than Python, not slower. Most of the delay for C++ seems to come from writing the blurred image to the disk, as seen in the write img bars in figure 7.1.
+These results were highly uncharacteristic. Based on previous research, we expected C++ to be faster than Python, not slower. Most of the delay for C++ seems to come from writing the blurred image to the disk, as seen in the write-img-bars in figure 7.1.
 
 \section{Saving to BMP instead of JPEG}
 One approach to solving the significant delay of C++ when writing images to the disk was to change the file type of the image for both languages. The default settings of the OpenCV package saved the image to whichever file type the image had initially been; in our case, that was JPEG (Joint Photographic Experts Group). Changing the file extension from JPEG to BMP (bitmap image file) would change the image file type on saving the image. Strangely, as seen in figure 7.2, this warped the data in such a way that reading the image now took longer for C++ and writing the image was quite a bit faster. We assume this might be attributed to the library version, but further research is needed to confirm this.
@@ -133,7 +133,7 @@ In order to rule out the possibility of the operating system influencing the une
 	\label{figure:linux}
 \end{figure}
 
-Interestingly, on Linux, the C++ program performed a lot faster than Python, 14,683 seconds faster, to be exact. This might once again be attributed to OpenCV being optimised differently for a different operating system and therefore performing better on Linux.
+Interestingly, on Linux, the C++ program performed a lot faster than Python, 14.683 seconds faster, to be exact. This might once again be attributed to OpenCV being optimised differently for a different operating system and therefore performing better on Linux.
 
 \section{C++ using OpenCV from VCPKG}
 One theory we had for the delay of C++ for disk output was that it was due to how the OpenCV library function handled writing to the disk. After doing further research, we found that the standard OpenCV package for Python is a different version from what is standard for C++. Using VCPKG, a C/C++ dependency manager \cite{vcpkg}, we were able to download the same version as used for Python and use it with C++. Benchmarking the programs with 100 randomly generated images shows the results in figure 7.9. Now, we can see only a very insignificant difference between the two programming languages compared to before.
@@ -157,10 +157,10 @@ An error interval is a property of the instrument and the user and will remain t
 	\label{figure:error-interval}
 \end{figure}
 
-From this, we can determine that if we have a reading of, e.g. 18,500, with an error interval, it is actually between 18,4995 and 18,5005. Whilst this allows us to have a realistic interpretation of our measurements, it also does not affect our observations since all proportions are still the same.
+From this, we can determine that if we have a reading of, e.g. 18.500, with an error interval, it is actually between 18.4995 and 18.5005. Whilst this allows us to have a realistic interpretation of our measurements, it also does not affect our observations since all proportions are still the same.
 
 \section{Energy consumption}
-To confirm that runtime was congruous with energy consumption, we used the Intel Power Gadget to approximately measure the energy consumption of each program, both using the standard form of OpenCV with no RAMdisk. C++ had a runtime of 58,233 seconds in the experiment, and Python had a runtime of 38,889 seconds.
+To confirm that runtime was congruous with energy consumption, we used the Intel Power Gadget to approximately measure the energy consumption of each program, both using the standard form of OpenCV with no RAMdisk. C++ had a runtime of 58.233 seconds in the experiment, and Python had a runtime of 38.889 seconds.
 
 \begin{figure}[H]
 	\centering
@@ -169,4 +169,4 @@ To confirm that runtime was congruous with energy consumption, we used the Intel
 	\label{figure:energy-consumption}
 \end{figure}
 
-We can see in figure 7.10 that the proportion of runtime to energy consumption is approximately the same. C++ used more energy than Python for the same program. Python’s runtime is 66,78\% of the C++ runtime, and Python’s energy consumption is 72,00\% of C++’s energy consumption overall and 72,30\% of the energy of the CPU/processor cores. These results indicate that runtime is an approximate indicator of energy consumption.
+We can see in figure 7.10 that the proportion of runtime to energy consumption is approximately the same. C++ used more energy than Python for the same program. Python’s runtime is 66.78\% of the C++ runtime, and Python’s energy consumption is 72.00\% of C++’s energy consumption overall and 72.30\% of the energy of the CPU/processor cores. These results indicate that runtime is an approximate indicator of energy consumption.
