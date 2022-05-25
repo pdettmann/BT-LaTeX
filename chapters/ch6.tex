@@ -10,6 +10,7 @@ A profiler is a benchmarking tool. It measures the runtime of a program, and oth
 
 \subsection{\textit{time}}
 At first, the macOS \textit{time} command was used to measure the runtime of the Python program, as seen in figure 6.1.
+\textit{time} is a macOS shell keyword that measures the total time spent running the program. The user row shows the time spent in the CPU in user mode, meaning “it does not have direct access to hardware or reference memory and must rely on APIs of the system for delegation. This is how most code runs on your system, and due to its isolation, crashes are always recoverable” \cite{time}. sys stands for system mode or kernel mode. Kernel mode is “when code being executed has unrestricted access to the system hardware” \cite{time}. The first row, called real, is the total time spent in the two modes.
 
 \begin{figure}[htbp]
 	\centering
@@ -17,8 +18,6 @@ At first, the macOS \textit{time} command was used to measure the runtime of the
 	\caption{An example of the \textit{time} command}
 	\label{figure:time}
 \end{figure}
-
-\textit{time} is a macOS shell keyword that measures the total time spent running the program. The user row shows the time spent in the CPU in user mode, meaning “it does not have direct access to hardware or reference memory and must rely on APIs of the system for delegation. This is how most code runs on your system, and due to its isolation, crashes are always recoverable” \cite{time}. sys stands for system mode or kernel mode. Kernel mode is “when code being executed has unrestricted access to the system hardware” \cite{time}. The first row, called real, is the total time spent in the two modes.
 
 \subsection{XCode Instruments}
 In order to keep the research controlled, it was decided to use the same profiler for both programs; Xcode instruments. Xcode is Apple’s IDE and contains Instruments amongst other developer tools. “The Instruments app, which is included with Xcode, gathers data from your running app and presents it in a graphical timeline. With Instruments, one can gather data about performance areas such as our app’s memory usage, disk activity, network activity, and graphics operations” \cite{instruments}. The command-line tool for Instruments is called xctrace, and it is used to record, import, export and symbolicate Instruments .trace files. These .trace files can then be opened in the Instruments app and analysed with the graphical user interface. The CPU Counter template was used most. It was used to track how much time was spent on each part of the program; the algorithm, disk input, disk output and retrieving file names.
@@ -33,8 +32,10 @@ The energy used by the programs can be measured by using the Intel® Power Gadge
 The experiment uses the same algorithm in both languages: Gaussian Blur. In image processing, a Gaussian blur is a result of blurring an image by a two-dimensional Gaussian function which was named after mathematician and scientist Carl Friedrich Gauss. Applying the algorithm to the image causes a blurring effect on the image, the intensity of the blur effect depending on variables like the kernel and standard deviation. The code for the two languages was written to execute as similar as possible.
 
 \subsection{Python}
+Looking at listing 1, os is a module that provides a portable way of using operating system dependent functionality \cite{os}. It is used in line 10 to list all image names in the raw images directory. In line 12, a for loop is used to iterate through that list of names, therefore every picture can be blurred, one at a time. Every picture first is “read” in line 18, after determining the path in line 13 and dismissing a possible macOS bug in case the file “.DS\_Store” exists in the directory in lines 15 and 16. In line 19, the Gaussian blur filter is applied to the image using the OpenCV function with parameters of the image variable and Gaussian kernel size. Line 21 shows the blurred image being written to the disk.
+In listing 1, the profiler cProfile being used. It is imported in line 5 and initialised in line 7. Line 8 enables the profiler and line 23 disables it so it is wrapped around the code we want to profile. In line 24 the collected statistics are printed to the console or a file.
 
-\begin{listing}[!ht]
+\begin{listing}[H]
 \begin{minted}[xleftmargin=20pt, linenos]{python}
 #!/usr/bin/env python
 
@@ -65,12 +66,10 @@ pr.print_stats()
 \label{listing:python}
 \end{listing}
 
-Looking at listing 1, os is a module that provides a portable way of using operating system dependent functionality \cite{os}. It is used in line 10 to list all image names in the raw images directory. In line 12, a for loop is used to iterate through that list of names, therefore every picture can be blurred, one at a time. Every picture first is “read” in line 18, after determining the path in line 13 and dismissing a possible macOS bug in case the file “.DS\_Store” exists in the directory in lines 15 and 16. In line 19, the Gaussian blur filter is applied to the image using the OpenCV function with parameters of the image variable and Gaussian kernel size. Line 21 shows the blurred image being written to the disk.
-In listing 1, the profiler cProfile being used. It is imported in line 5 and initialised in line 7. Line 8 enables the profiler and line 23 disables it so it is wrapped around the code we want to profile. In line 24 the collected statistics are printed to the console or a file.
-
 \subsection{C++}
+Listing 2 shows the beginning of the C++ code. First, the OpenCV and C++ standard libraries are imported and the namespaces are assigned.
 
-\begin{listing}[!ht]
+\begin{listing}[H]
 \begin{minted}[xleftmargin=20pt, linenos]{c++}
 #include <opencv2/opencv.hpp>
 #include <iostream>
@@ -87,9 +86,9 @@ namespace fs = std::__fs::filesystem;
 \label{listing:c++requirements}
 \end{listing}
 
-Listing 2 shows the beginning of the C++ code. First, the OpenCV and C++ standard libraries are imported and the namespaces are assigned.
+In listing 3, the path to the images is added as a parameter to the main function when the program is run in line 1. To prevent a bug the file “.DS\_Store” in the path in line 16 is ignored.
 
-\begin{listing}[ht]
+\begin{listing}[H]
 \begin{minted}[xleftmargin=20pt, linenos]{c++}
 int main(int argc, char* argv[])
 {
@@ -116,9 +115,9 @@ int main(int argc, char* argv[])
 \label{listing:c++-read}
 \end{listing}
 
-In listing 3, the path to the images is added as a parameter to the main function when the program is run in line 1. To prevent a bug the file “.DS\_Store” in the path in line 16 is ignored.
+In line 2 of listing 4, the image file is read with the OpenCV imread function. In line 14 the image is blurred with the GaussianBlur filter function from OpenCV \cite{gaussianblur}. Size (5, 5) is the Gaussian kernel size, it should be an odd number. The last zero controls the sigma value which is the standard deviation in the X direction and the Y direction of the Gaussian distribution. It will be calculated based on the size of the kernel \cite{gaussianblurtutorial}. In line 19 the image is saved to the path specified in the parameter and the success of that operation is checked. At the end, 0 is returned to terminate the function successfully.
 
-\begin{listing}[ht]
+\begin{listing}[H]
 \begin{minted}[xleftmargin=20pt, linenos]{c++}
 
     // Read the image file
@@ -155,5 +154,3 @@ In listing 3, the path to the images is added as a parameter to the main functio
 \caption{Processing and writing the image file to the disk}
 \label{listing:c++-write}
 \end{listing}
-
-In line 2 of listing 4, the image file is read with the OpenCV imread function. In line 14 the image is blurred with the GaussianBlur filter function from OpenCV \cite{gaussianblur}. Size (5, 5) is the Gaussian kernel size, it should be an odd number. The last zero controls the sigma value which is the standard deviation in the X direction and the Y direction of the Gaussian distribution. It will be calculated based on the size of the kernel \cite{gaussianblurtutorial}. In line 19 the image is saved to the path specified in the parameter and the success of that operation is checked. At the end, 0 is returned to terminate the function successfully.

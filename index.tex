@@ -85,10 +85,6 @@
 \fancyhead[L]{\bfseries\nouppercase\rightmark}
 \fancyhead[R]{\bfseries\thepage}
 
-% setup bibliography
-% \usepackage[style=apa,url=true,sorting=nty,backend=biber]{biblatex}
-% \usepackage{csquotes}
-% \addbibresource{references.bib}
 \renewcommand{\UrlFont}{\small\tt}
 
 \title{The Environmental Impact of Programming Language Choice}
@@ -128,6 +124,7 @@
 \tableofcontents
 \listoffigures
 \listoflistings
+\addcontentsline{toc}{chapter}{List of Listings}
 
 \input{chapters/ch1}
 \pagenumbering{arabic}
@@ -140,14 +137,6 @@
 \input{chapters/ch7}
 \input{chapters/ch8}
 \input{chapters/ch9}
-
-% \clearpage
-% \phantomsection
-% \addcontentsline{toc}{chapter}{Bibliography}
-% \setlength{\bibitemsep}{10pt}
-% \renewcommand{\baselinestretch}{1.1}
-% \sloppy
-% \printbibliography
 
 \bibliographystyle{ieeetr}
 \bibliography{references}
