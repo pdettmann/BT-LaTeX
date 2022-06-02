@@ -2,7 +2,7 @@
 In order to discern whether the choice of programming language has an environmental impact, experiments were executed, each time changing a different aspect of the experiment to detect if there was a significant difference between the performance of the languages. Most experiments used the programs to blur 78 high definition images.
 
 \section{C++ and Python with OpenCV }
-The first experiment was to run the programs with the chosen profiler of xctrace and cProfile to determine the runtime of each function in the program, blurring 78 images in total. Each benchmark was run five times and then the average was calculated. The average of the results of these experiments are shown in figure 7.1.
+The first experiment was to run the programs with the chosen profiler of xctrace and cProfile to determine the runtime of each function in the program, blurring 78 images in total. Each benchmark was run five times and then the average was calculated. The average of the results of these experiments is shown in figure 7.1.
 
 \begin{figure}[H]
 	\centering
@@ -47,7 +47,7 @@ xctrace record --template 'green' --launch ./opencv.py
 	\end{listing}
 
 This was done to minimise the time between running each benchmark and, therefore, minimise the difference between computer operations. It also allowed randomisation of the different programs to see how one program running before or after another might affect its performance.
-We can see in figure 7.3-a, when compared to figure 7.3-b, that there is a slight difference between the readings when using a script. This is especially visible when writing the image in C++. We might attribute this to the system load caused by running all programs so quickly after each other.
+We can see in figure 7.3-a when compared to figure 7.3-b, that there is a slight difference between the readings when using a script. This is especially visible when writing the image in C++. We might attribute this to the system load caused by running all programs so quickly after each other.
 
 \begin{figure}[H]
 	\centering
@@ -144,7 +144,7 @@ One theory for the delay of C++ for disk output was that it was due to how the O
 We can see that the total runtime here is significantly less than when using the previous images. This can probably be attributed to the randomly generated images, which seem to have a lower resolution and are therefore faster to be processed. However, this is not important for this study as only the comparison of C++ and Python is of any consequence and not the overall performance.
 
 \section{The error interval}
-An error interval is a property of the instrument and the user and will remain the same for all readings taken, provided the scale is linear \cite{errorinterval}. It can be determined by finding the fraction of the smallest readable division on the instrument. In the table displayed in figure 7.9, benchmarking Python has yielded the error intervals in the last row, which is the same for each reading, using the same instrument.
+An error interval is a property of the instrument and the user and will remain the same for all readings taken, provided the scale is linear \cite{errorinterval}. It can be determined by finding the fraction of the smallest readable division on the instrument. In the table displayed in figure 7.9, benchmarking Python has yielded the error intervals in the last row, which are the same for each reading, using the same instrument.
 
 \begin{figure}[H]
 	\centering
