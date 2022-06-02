@@ -1,8 +1,8 @@
 \chapter{Results}
-In order to discern whether the choice of programming language has an environmental impact, experiments were executed, each time changing a different aspect of the experiment to see if there is a significant difference between the performance of the languages. Most experiments used the programs to blur 78 high definition images.
+In order to discern whether the choice of programming language has an environmental impact, experiments were executed, each time changing a different aspect of the experiment to detect if there was a significant difference between the performance of the languages. Most experiments used the programs to blur 78 high definition images.
 
 \section{C++ and Python with OpenCV }
-The first experiment was to run our programs with the chosen profiler of xctrace and cProfile to determine the runtime of each function in the program, blurring 78 images in total. Each benchmark was run five times and then the average was calculated. We see the result of these experiments in figure 7.1.
+The first experiment was to run the programs with the chosen profiler of xctrace and cProfile to determine the runtime of each function in the program, blurring 78 images in total. Each benchmark was run five times and then the average was calculated. The average of the results of these experiments are shown in figure 7.1.
 
 \begin{figure}[H]
 	\centering
@@ -11,7 +11,7 @@ The first experiment was to run our programs with the chosen profiler of xctrace
 	\label{figure:average-78img}
 \end{figure}
 
-These results were highly uncharacteristic. Based on previous research, it was expected that C++ would be faster than Python, not slower. Most of the delay for C++ seemed to come from writing the blurred image to the disk, as seen in the write-img-bars in figure 7.1.
+These results were highly uncharacteristic. Based on previous research, it was expected that C++ would be faster than Python, not slower. Most of the delay for C++ seemed to come from writing the blurred image to the disk, as seen in the write img bars in figure 7.1.
 
 \section{Saving to BMP instead of JPEG}
 One approach to solving the significant delay of C++ when writing images to the disk was to change the file type of the image for both languages. The default settings of the OpenCV package saved the image to whichever file type the image had initially been; in this case, that was JPEG (Joint Photographic Experts Group). Changing the file extension from JPEG to BMP (bitmap image file) would change the image file type on saving the image. Strangely, as seen in figure 7.2, this warped the data in such a way that reading the image now took longer for C++ and writing the image was quite a bit faster. It is assumed that this might be attributed to the library version, but further research is needed to confirm this.
@@ -88,8 +88,8 @@ Figure 7.4 shows two benchmarks with a different script order, both using a RAMd
 \end{figure}
 
 \section{RAMdisk}
-A RAMdisk is a block of random-access memory that a computer's software is treating as if the memory were a disk drive. It can be used to accelerate the reading and writing of files. A RAMdisk was installed using the command "diskutil erasevolume HFS+ "RAMDisk" `hdiutil attach -nomount ram://2097152`" in the terminal. This creates a RAMdisk with 1 GB of storage space.
-As seen in figure 7.5, compared to the benchmarks with no RAMdisk, running the scripted benchmarks with a RAMdisk surprisingly returns a decreased performance. However, the difference is so slight that we cannot confirm whether this is due to the RAMdisk or another influence.
+A RAMdisk is a block of random-access memory that a computer's software is treating as if the memory were a disk drive. It can be used to accelerate the reading and writing of files. A RAMdisk was installed using the command "diskutil erasevolume HFS+ "RAMDisk" `hdiutil attach -nomount ram://2097152`" in the terminal. This created a RAMdisk with 1 GB of storage space.
+As seen in figure 7.5, compared to the benchmarks with no RAMdisk, running the scripted benchmarks with a RAMdisk surprisingly returned a decreased performance. However, the difference is so slight that we cannot confirm whether this is due to the RAMdisk or another influence.
 
 \begin{figure}[H]
 	\centering
@@ -110,8 +110,8 @@ As seen in figure 7.5, compared to the benchmarks with no RAMdisk, running the s
 \end{figure}
 
 \section{Running the programs on a different computer}
-In order to find out whether the computer hardware influenced the disk I/O, it was decided to test the programs on a different computer. The same computer type in a different configuration was utilised: the MacBook Pro from 2021 with an M1 Pro Apple Silicon CPU, 32 GB of RAM and a 1 TB SSD. To run the programs on this new configuration, it was needed to install Python version 3.10.3 instead of the previously used 3.8.12. The software was not compatible with the new M1 chip, so it had to be recompiled for Apple Silicon.
-Figure 7.6 shows a similar distribution of runtime for the benchmark but an overall acceleration of 15 to 20 seconds compared to the other computer. The results are expected since this computer is a newer model and has more powerful hardware.
+In order to detect whether the computer hardware influenced the disk I/O, the programs were tested on a different computer. The same computer type in a different configuration was utilised: the MacBook Pro from 2021 with an M1 Pro Apple Silicon CPU, 32 GB of RAM and a 1 TB SSD (solid-state drive). To run the programs on this new configuration, Python version 3.10.3 needed to be installed instead of the previously used 3.8.12. The software was not compatible with the new M1 chip, so it had to be recompiled for Apple Silicon.
+Figure 7.6 shows a similar distribution of runtime for the benchmark but an overall acceleration of 15 to 20 seconds compared to the other computer. These results were expected since this computer was a newer model and had more powerful hardware.
 
 \begin{figure}[H]
 	\centering
@@ -121,7 +121,7 @@ Figure 7.6 shows a similar distribution of runtime for the benchmark but an over
 \end{figure}
 
 \section{Profiling C++ and Python on Linux}
-In order to rule out the possibility of the operating system influencing the unexpectedly slow C++ runtime, it was decided to experiment with our programs on a different operating system. An Ubuntu Linux instance was created using a virtual machine to benchmark the programs. This required some adjusting as the executable made for macOS was not compatible with Linux, and Linux obviously does not support the macOS instruments profiler. The C++ code was compiled with the cmake tool \cite{cmake} to create the new executable. The GCC (GNU Compiler Collection) \cite{gcc} compiler native fprofile command was used as a profiler. For Python, it was still possible to use the cProfile profiler. Each program was run five times and the average was calculated as seen in figure 7.7.
+In order to rule out the possibility of the operating system influencing the unexpectedly slow C++ runtime, it was decided to experiment with the programs on a different operating system. An Ubuntu Linux instance was created using a virtual machine to benchmark the programs. This required some adjusting as the executable made for macOS was not compatible with Linux, and Linux does not support the macOS instruments profiler. The C++ code was compiled with the cmake tool \cite{cmake} to create the new executable. The GCC (GNU Compiler Collection) \cite{gcc} compiler native fprofile command was used as a profiler. For Python, it was still possible to use the cProfile profiler. Each program was run five times and the average was calculated as seen in figure 7.7.
 Interestingly, on Linux, the C++ program performed a lot faster than Python, 14.683 seconds faster, to be exact. This might once again be attributed to OpenCV being optimised differently for a different operating system and therefore performing better on Linux.
 
 \begin{figure}[H]
@@ -144,7 +144,7 @@ One theory for the delay of C++ for disk output was that it was due to how the O
 We can see that the total runtime here is significantly less than when using the previous images. This can probably be attributed to the randomly generated images, which seem to have a lower resolution and are therefore faster to be processed. However, this is not important for this study as only the comparison of C++ and Python is of any consequence and not the overall performance.
 
 \section{The error interval}
-An error interval is a property of the instrument and the user and will remain the same for all readings taken, provided the scale is linear \cite{errorinterval}. It can be determined by finding the fraction of the smallest readable division on the instrument. In the case displayed in figure 7.9, benchmarking Python has yielded the error intervals in the last row, which is the same for each reading, using the same instrument.
+An error interval is a property of the instrument and the user and will remain the same for all readings taken, provided the scale is linear \cite{errorinterval}. It can be determined by finding the fraction of the smallest readable division on the instrument. In the table displayed in figure 7.9, benchmarking Python has yielded the error intervals in the last row, which is the same for each reading, using the same instrument.
 
 \begin{figure}[H]
 	\centering
@@ -153,7 +153,7 @@ An error interval is a property of the instrument and the user and will remain t
 	\label{figure:error-interval}
 \end{figure}
 
-From this, we can determine that if we have a reading of, e.g. 18.500, with an error interval, it is actually between 18.4995 and 18.5005. Whilst this allows for a realistic interpretation of our measurements, it also does not affect any observations since all proportions are still the same.
+From this, it can be determined that if there is a reading of, e.g. 18.500, with an error interval, it is actually between 18.4995 and 18.5005. Whilst this allows for a realistic interpretation of the measurements, it also does not affect any observations since all proportions are still the same.
 
 \section{Energy consumption}
 To confirm that runtime was congruous with energy consumption, the Intel Power Gadget was used to approximately measure the energy consumption of each program, both using the standard form of OpenCV with no RAMdisk. C++ had a runtime of 58.233 seconds in the experiment, and Python had a runtime of 38.889 seconds.
