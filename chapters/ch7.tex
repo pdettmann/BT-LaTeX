@@ -2,7 +2,7 @@
 In order to discern whether the choice of programming language has an environmental impact, experiments were executed, each time changing a different aspect of the experiment to detect if there was a significant difference between the performance of the languages. Most experiments used the programs to blur 78 high definition images.
 
 \section{C++ and Python with OpenCV }
-The first experiment was to run the programs with the chosen profiler of xctrace and cProfile to determine the runtime of each function in the program, blurring 78 images in total. Each benchmark was run five times and then the average was calculated. The average of the results of these experiments is shown in figure 7.1.
+The first experiment was to run the programs with the chosen profilers of xctrace and cProfile to determine the runtime of each function in the program, blurring 78 images in total. Each benchmark was run five times and then the average was calculated. The average of the results of these experiments is shown in figure 7.1.
 
 \begin{figure}[H]
 	\centering
@@ -11,7 +11,7 @@ The first experiment was to run the programs with the chosen profiler of xctrace
 	\label{figure:average-78img}
 \end{figure}
 
-These results were highly uncharacteristic. Based on previous research, it was expected that C++ would be faster than Python, not slower. Most of the delay for C++ seemed to come from writing the blurred image to the disk, as seen in the write img bars in figure 7.1.
+These results were highly uncharacteristic. Based on previous research, it was expected that C++ would be faster than Python, not slower. Most of the delay for C++ came from writing the blurred image to the disk, as seen in the write img bars in figure 7.1.
 
 \section{Saving to BMP instead of JPEG}
 One approach to solving the significant delay of C++ when writing images to the disk was to change the file type of the image for both languages. The default settings of the OpenCV package saved the image to whichever file type the image had initially been; in this case, that was JPEG (Joint Photographic Experts Group). Changing the file extension from JPEG to BMP (bitmap image file) would change the image file type on saving the image. Strangely, as seen in figure 7.2, this warped the data in such a way that reading the image now took longer for C++ and writing the image was quite a bit faster. It is assumed that this might be attributed to the library version, but further research is needed to confirm this.
@@ -47,7 +47,7 @@ xctrace record --template 'green' --launch ./opencv.py
 	\end{listing}
 
 This was done to minimise the time between running each benchmark and, therefore, minimise the difference between computer operations. It also allowed randomisation of the different programs to see how one program running before or after another might affect its performance.
-We can see in figure 7.3-a when compared to figure 7.3-b, that there is a slight difference between the readings when using a script. This is especially visible when writing the image in C++. We might attribute this to the system load caused by running all programs so quickly after each other.
+We can see in figure 7.3-a when compared to figure 7.3-b, that there is a slight difference between the readings when using a script. This is especially visible when writing the image in C++. This might be attributed this to the system load caused by running all programs so quickly after each other.
 
 \begin{figure}[H]
 	\centering
@@ -89,7 +89,7 @@ Figure 7.4 shows two benchmarks with a different script order, both using a RAMd
 
 \section{RAMdisk}
 A RAMdisk is a block of random-access memory that a computer's software is treating as if the memory were a disk drive. It can be used to accelerate the reading and writing of files. A RAMdisk was installed using the command "diskutil erasevolume HFS+ "RAMDisk" `hdiutil attach -nomount ram://2097152`" in the terminal. This created a RAMdisk with 1 GB of storage space.
-As seen in figure 7.5, compared to the benchmarks with no RAMdisk, running the scripted benchmarks with a RAMdisk surprisingly returned a decreased performance. However, the difference is so slight that we cannot confirm whether this is due to the RAMdisk or another influence.
+As seen in figure 7.5, compared to the benchmarks with no RAMdisk, running the scripted benchmarks with a RAMdisk surprisingly returned a decreased performance. However, the difference is so slight that it cannot be confirmed whether this is due to the RAMdisk or another influence.
 
 \begin{figure}[H]
 	\centering
@@ -132,7 +132,7 @@ Interestingly, on Linux, the C++ program performed a lot faster than Python, 14.
 \end{figure}
 
 \section{C++ using OpenCV from VCPKG}
-One theory for the delay of C++ for disk output was that it was due to how the OpenCV library function handled writing to the disk. After doing further research, it was found that the standard OpenCV package for Python is a different version from what is standard for C++. Using VCPKG, a C/C++ dependency manager \cite{vcpkg}, the same version as used for Python was downloaded and used for C++. Benchmarking the programs with 100 randomly generated images shows the results in figure 7.9. Now, we can see only a very insignificant difference between the two programming languages compared to before.
+One theory for the delay of C++ for disk output was that it was due to how the OpenCV library function handled writing to the disk. After doing further research, it was found that the standard OpenCV package for Python is a different version from what is standard for C++. Using VCPKG, a C/C++ dependency manager \cite{vcpkg}, the same version as used for Python was downloaded and used for C++. Benchmarking the programs with 100 randomly generated images shows the results in figure 7.8. Now, only a very insignificant difference between the two programming languages can be seen, compared to before.
 
 \begin{figure}[H]
 	\centering
@@ -141,10 +141,10 @@ One theory for the delay of C++ for disk output was that it was due to how the O
 	\label{figure:same-opencv}
 \end{figure}
 
-We can see that the total runtime here is significantly less than when using the previous images. This can probably be attributed to the randomly generated images, which seem to have a lower resolution and are therefore faster to be processed. However, this is not important for this study as only the comparison of C++ and Python is of any consequence and not the overall performance.
+We can see in figure 7.8 that the total runtime is significantly less than when using the previous images. This can probably be attributed to the randomly generated images, which seem to have a lower resolution and are therefore processed faster. However, this is not important for this study as only the comparison of C++ and Python is of any consequence and not the overall performance.
 
 \section{The error interval}
-An error interval is a property of the instrument and the user and will remain the same for all readings taken, provided the scale is linear \cite{errorinterval}. It can be determined by finding the fraction of the smallest readable division on the instrument. In the table displayed in figure 7.9, benchmarking Python has yielded the error intervals in the last row, which are the same for each reading, using the same instrument.
+An error interval is a property of the instrument and the user and will remain the same for all readings taken, provided the scale is linear \cite{errorinterval}. It can be determined by finding the fraction of the smallest readable division on the instrument. In the table displayed in figure 7.9, benchmarking Python yielded the error intervals in the last row, which are the same for each reading, using the same instrument.
 
 \begin{figure}[H]
 	\centering

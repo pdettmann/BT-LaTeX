@@ -1,5 +1,5 @@
 \chapter{Methods}
-In order to prove the hypothesis, a small program to blur images was written. The kind of program was not important, but it was necessary for it to take a significant amount of time and make a measurable impact on the CPU.
+In order to prove the hypothesis, a small program to blur images was written. The kind of program was not important, but it was necessary for it to take a significant amount of time and make a measurable impact on the CPU (central processing unit).
 The program was benchmarked using profilers. The profiler data showed where delays in the code were located and which language was faster at executing the same procedure. This information could distinguish which language, for the purpose of image processing in the form of a Gaussian blur, is more efficient and therefore more environmentally friendly.
 
 \section{Hardware}
@@ -33,7 +33,7 @@ The experiment used the same algorithm in both languages: Gaussian Blur. In imag
 
 \subsection{Python}
 Looking at listing 1, os is a module that provides a portable way of using operating system dependent functionality \cite{os}. It is used in line 10 to list all image names in the raw images directory. In line 12, a for loop is used to iterate through that list of names, therefore every picture can be blurred, one at a time. Every picture first is “read” in line 18, after determining the path in line 13 and dismissing a possible macOS bug in case the file “.DS\_Store” exists in the directory in lines 15 and 16. In line 19, the Gaussian blur filter is applied to the image using the OpenCV function with parameters of the image variable and Gaussian kernel size. Line 21 shows the blurred image being written to the disk.
-In listing 1, the profiler cProfile is used. It is imported in line 5 and initialised in line 7. Line 8 enables the profiler and line 23 disables it so it is wrapped around the code we want to profile. In line 24 the collected statistics are printed to the console or a file.
+In listing 1, the profiler cProfile is used. It is imported in line 5 and initialised in line 7. Line 8 enables the profiler and line 23 disables it so it is wrapped around the code that needs to be profiled. In line 24 the collected statistics are printed to the console or a file.
 
 \begin{listing}[H]
 \begin{minted}[xleftmargin=20pt, linenos]{python}
