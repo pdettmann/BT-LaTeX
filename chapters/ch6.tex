@@ -3,7 +3,7 @@ In order to prove the hypothesis, a small program to blur images was written. Th
 The program was benchmarked using profilers. The profiler data showed where delays in the code were located and which language was faster at executing the same procedure. This information could distinguish which language, for the purpose of image processing in the form of a Gaussian blur, is more efficient and therefore more environmentally friendly.
 
 \section{Hardware}
-Most of the experiments were performed on an Apple MacBook Pro with a 1.4 GHz Quad-Core Intel Core i5 processor. The computer had 16 GB of RAM (random-access memory) and 251 GB of flash storage. It was running version 12.3.1 of the MacOS Monterey operating system.
+Most of the experiments were performed on an Apple MacBook Pro with a 1.4 GHz Quad-Core Intel Core i5 processor. The computer had 16 GB of RAM (random-access memory) and 256 GB of flash storage. It was running version 12.3.1 of the macOS Monterey operating system.
 
 \section{Profilers}
 A profiler is a benchmarking tool. It measures the runtime of a program, and other statistics, depending on the profiler. To benchmark the Python program on macOS, a combination of xctrace and cPython was used. For the C++ code on macOS, xctrace was exclusively used.
@@ -19,7 +19,7 @@ At first, the macOS \textit{time} command was used to measure the runtime of the
 	\label{figure:time}
 \end{figure}
 
-\subsection{XCode Instruments}
+\subsection{Xcode Instruments}
 In order to keep the research controlled, it was decided to use the same profiler for both programs; Xcode instruments. Xcode is Apple’s IDE and contains Instruments amongst other developer tools. “The Instruments app, which is included with Xcode, gathers data from your running app and presents it in a graphical timeline. With Instruments, one can gather data about performance areas such as our app’s memory usage, disk activity, network activity, and graphics operations” \cite{instruments}. The command-line tool for Instruments is called xctrace, and it is used to record, import, export and symbolicate Instruments .trace files. These .trace files can then be opened in the Instruments app and analysed with the graphical user interface. The CPU Counter template was used most. It was used to track how much time was spent on each part of the program; the algorithm, disk input and disk output.
 
 \subsection{cProfile}
